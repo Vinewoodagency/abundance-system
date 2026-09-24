@@ -1,0 +1,91 @@
+====================================================================
+ABUNDANCE CRM - QUICK COMMANDS (COPY & PASTE)
+====================================================================
+
+STEP 1: EXTRACT & MOVE TO DESKTOP
+====================================================================
+
+ls -la ~/Downloads/ | grep abundance
+
+cd ~/Downloads
+unzip -o abundance-codebase.zip -d abundance-system
+ls -la ~/Downloads/abundance-system/
+
+rm -rf ~/Desktop/abundance-system
+mv ~/Downloads/abundance-system ~/Desktop/abundance-system
+cd ~/Desktop/abundance-system
+ls -la | head -20
+
+
+STEP 2: INITIALIZE GIT
+====================================================================
+
+rm -rf .git
+git init
+git remote add origin https://github.com/Vinewoodagency/abundance-system.git
+git config user.email "info@vinewoodagency.com"
+git config user.name "Vinewood Agency"
+
+
+STEP 3: PUSH TO GITHUB
+====================================================================
+
+git add -A
+git commit -m "Add complete Abundance CRM - FastAPI backend, React frontend, Docker, PostgreSQL"
+git push -u origin main
+
+# Password: [PASTE GITHUB TOKEN starting with ghp_]
+
+
+STEP 4: VERIFY
+====================================================================
+
+git status
+git remote -v
+
+
+STEP 5: DIGITALOCEAN DEPLOYMENT
+====================================================================
+
+# Visit: https://cloud.digitalocean.com/apps/new
+# 1. Select GitHub as source
+# 2. Connect: Vinewoodagency/abundance-system
+# 3. Branch: main
+# 4. Let it auto-detect components
+# 5. Add environment variables:
+
+ENV = production
+DEBUG = False
+SECRET_KEY = (generate: openssl rand -base64 32)
+ALLOWED_ORIGINS = https://abundance-crm-[APP-ID].ondigitalocean.app
+DATABASE_URL = [DigitalOcean provides this]
+VITE_API_URL = https://abundance-crm-[APP-ID].ondigitalocean.app
+
+# 6. Click "Create Resources"
+# 7. Wait 5-10 minutes
+
+
+STEP 6: TEST LIVE
+====================================================================
+
+curl https://abundance-crm-[APP-ID].ondigitalocean.app/api/health
+
+# Open browser:
+# Frontend: https://abundance-crm-[APP-ID].ondigitalocean.app
+# Docs: https://abundance-crm-[APP-ID].ondigitalocean.app/docs
+
+
+FUTURE UPDATES (AFTER INITIAL DEPLOY)
+====================================================================
+
+cd ~/Desktop/abundance-system
+git add -A
+git commit -m "Update: [your changes]"
+git push origin main
+
+# DigitalOcean auto-deploys (5-10 min)
+
+
+====================================================================
+Need help? info@vinewoodagency.com
+====================================================================
